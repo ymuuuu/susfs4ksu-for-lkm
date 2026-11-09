@@ -59,6 +59,7 @@ static const char *const susfs_self_hide_paths[] = {
      * entries and the counters that say whether a wrapper ever ran. */
     SUSFS_OPATH_NODE,
     SUSFS_MAP_NODE,
+    SUSFS_UNIX_NODE,
     /* The module's own sysfs directory is NOT here: it belongs to hide_module
      * (susfs_hide_syms.c), which adds and drops that rule at runtime. */
 };
@@ -263,6 +264,7 @@ enum susfs_layer_id {
     SUSFS_L_AVC_SPOOF,
     SUSFS_L_SUPERCALL,
     SUSFS_L_HIDE_SYMS,
+    SUSFS_L_SUS_UNIX,
     SUSFS_L_COUNT,
 };
 
@@ -316,6 +318,9 @@ static struct susfs_layer {
     { "avc_spoof",	susfs_avc_spoof_init,		susfs_avc_spoof_exit,	false, SUSFS_FEAT_AVC_SPOOF },
     { "supercall",	susfs_supercall_init,		susfs_supercall_exit,	false, -1 },
     { "hide_syms",	susfs_hide_syms_init,		susfs_hide_syms_exit,	false, SUSFS_FEAT_HIDE_SYMS },
+    /* Last, so the fail_layer numbering of every layer above stays as it was.  NOT fatal: without
+     * it abstract unix listeners stay reachable, nothing else depends on it. */
+    { "sus_unix",	susfs_sus_unix_init,		susfs_sus_unix_exit,	false, -1 },
 };
 
 /* Diagnostic: make one layer's init fail, by 1-based index, to exercise the rollback path
@@ -328,6 +333,7 @@ static struct susfs_layer {
  *   1 fp_hook   2 ksu_umount_gate  3 ksu_allow_gate  4 lsm_hook   5 sus_path
  *   6 create_gate  7 opath  8 dirent  9 uname  10 kstat  11 sus_map  12 sus_mount
  *   13 cmdline  14 open_redirect  15 enable_log  16 avc_spoof  17 supercall  18 hide_syms
+ *   19 sus_unix
  */
 static int fail_layer;
 module_param_named(fail_layer, fail_layer, int, 0644);
@@ -373,6 +379,7 @@ static const struct {
     { SUSFS_L_AVC_SPOOF, false },
     { SUSFS_L_SUPERCALL, true },
     { SUSFS_L_HIDE_SYMS, false },
+    { SUSFS_L_SUS_UNIX, false },
 };
 
 static int susfs_load_layer(int id, bool fatal)
