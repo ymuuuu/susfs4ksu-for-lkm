@@ -70,7 +70,7 @@ def main():
         "name=SUSFS Guard (LKM)\n"
         f"version={args.tag}\n"
         f"versionCode={version_code}\n"
-        "author=inforcqb\n"
+        "author=inforcqb, ymuuuu\n"
         f"description=not loaded yet - loads the matching .ko on boot "
         f"({len(kmis)} arm64 KMIs, {low}-{high}). Loader only, no rules.\n"
     )

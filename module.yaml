@@ -5,12 +5,14 @@ name: SUSFS Guard (LKM)
 summary: Loadable SUSFS kernel module for Android GKI kernels, with a boot-time module package and manual KMI override.
 description: README.md
 license: GPL-2.0-only
-homepage: https://github.com/inforcqb/susfs4ksu-lkm
-support: https://github.com/inforcqb/susfs4ksu-lkm/issues
+homepage: https://github.com/ymuuuu/susfs4ksu-for-lkm
+support: https://github.com/ymuuuu/susfs4ksu-for-lkm/issues
 tags: [kernel, root, susfs]
 authors:
   - name: inforcqb
     url: https://github.com/inforcqb
+  - name: ymuuuu
+    url: https://github.com/ymuuuu
 compatibility:
   androidMinApi: 31
   architectures: [arm64-v8a]
