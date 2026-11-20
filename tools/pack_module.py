@@ -12,6 +12,7 @@ import argparse
 import datetime
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import zipfile
@@ -80,7 +81,11 @@ def main():
             raise SystemExit(f"ddk images file is not a JSON list: {args.ddk_images}")
 
     provenance = {
-        "repository": "https://github.com/inforcqb/susfs4ksu-lkm",
+        # Name the repository that actually built the ZIP: a fork's CI must not claim
+        # to be upstream.  GitHub Actions sets both variables; a host build keeps
+        # the upstream name.
+        "repository": os.environ.get("GITHUB_SERVER_URL", "https://github.com") + "/"
+                      + os.environ.get("GITHUB_REPOSITORY", "inforcqb/susfs4ksu-lkm"),
         "tag": args.tag,
         # The provenance has to say which source and which toolchain produced these
         # bytes; the tag alone ties the ZIP to a name, not to a tree.  Both are
