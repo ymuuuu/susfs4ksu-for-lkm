@@ -81,6 +81,11 @@
       "phase": 0,
       "budget": 999
     },
+    "kernel/sus_unix.c": {
+      "layer": "legacy",
+      "phase": 0,
+      "budget": 999
+    },
     "kernel/sus_dirent.c": {
       "layer": "legacy",
       "phase": 0,
